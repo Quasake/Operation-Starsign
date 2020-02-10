@@ -34,4 +34,4 @@ MonoBehaviour:
   EndurancePercentBonus: 0
   LuckPercentBonus: 0.05
   CharismaPercentBonus: 0.2
-  EquipmentType: 0
+  EquipmentType: 3
