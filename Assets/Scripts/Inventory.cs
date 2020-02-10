@@ -3,13 +3,13 @@ using UnityEngine;
 using System;
 
 public class Inventory : MonoBehaviour {
-	[SerializeField] List<Item> items;
+	[SerializeField] List<Item> items ;
 	[SerializeField] Transform itemsParent;
 	[SerializeField] ItemSlot[ ] itemSlots;
 
 	public event Action<Item> OnItemRightClickedEvent;
 
-	private void Awake ( ) {
+	private void Start ( ) {
 		for (int i = 0; i < itemSlots.Length; i++) {
 			itemSlots[i].OnRightClickEvent += OnItemRightClickedEvent;
 		}
