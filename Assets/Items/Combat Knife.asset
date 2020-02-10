@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5de8671281c2e7489e8ad68ab6035ac, type: 3}
+  m_Name: Combat Knife
+  m_EditorClassIdentifier: 
+  ItemName: Combat Knife
+  Icon: {fileID: 5508725064705088119, guid: b43685aa8e75223409f70d9d153ab981, type: 3}
+  HealthBonus: 0
+  MysticPowerBonus: 0
+  StrengthBonus: 10
+  DefenseBonus: 0
+  MysticStrengthBonus: 0
+  FortitudeBonus: 0
+  SpeedBonus: 3
+  EnduranceBonus: 1
+  LuckBonus: 0
+  CharismaBonus: 0
+  HealthPercentBonus: 0
+  MysticPowerPercentBonus: 0
+  StrengthPercentBonus: 0
+  DefensePercentBonus: 0
+  MysticStrengthPercentBonus: 0
+  FortitudePercentBonus: 0
+  SpeedPercentBonus: 0
+  EndurancePercentBonus: 0
+  LuckPercentBonus: 0
+  CharismaPercentBonus: 0
+  EquipmentType: 2
