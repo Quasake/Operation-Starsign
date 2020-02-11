@@ -1760,7 +1760,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -303.605, y: 0.0000024400651}
-  m_SizeDelta: {x: 607.21, y: 385.57}
+  m_SizeDelta: {x: 612.5, y: 375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645157560
 MonoBehaviour:
@@ -3513,6 +3513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1319491293}
   - component: {fileID: 1319491294}
+  - component: {fileID: 1319491295}
   m_Layer: 5
   m_Name: Character Panel
   m_TagString: Untagged
@@ -3576,6 +3577,20 @@ MonoBehaviour:
   inventory: {fileID: 645157562}
   equipment: {fileID: 1041443055}
   statManager: {fileID: 530774044}
+--- !u!114 &1319491295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319491292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 0
 --- !u!1 &1344105579
 GameObject:
   m_ObjectHideFlags: 0
@@ -3869,7 +3884,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 179.76001, y: 0.00074673}
-  m_SizeDelta: {x: 356.67, y: 501.35}
+  m_SizeDelta: {x: 356.25, y: 493.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1362548802
 MonoBehaviour:
