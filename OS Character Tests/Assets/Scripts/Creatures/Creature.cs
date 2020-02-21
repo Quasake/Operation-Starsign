@@ -10,7 +10,6 @@ public abstract class Creature : MonoBehaviour {
 	[Header("Stats")]
 	[SerializeField] protected float hp;
 	[SerializeField] protected float mp;
-	[SerializeField] protected float bp;
 	[SerializeField] protected float strength;
 	[SerializeField] protected float defense;
 	[SerializeField] protected float mysticStrength;
@@ -19,6 +18,7 @@ public abstract class Creature : MonoBehaviour {
 	[SerializeField] protected float endurance;
 	[SerializeField] protected float luck;
 	[SerializeField] protected float charisma;
+	[SerializeField] protected float bp;
 
 	[Header("In-Battle Stats")]
 	[SerializeField] protected float accBoost;

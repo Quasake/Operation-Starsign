@@ -34,12 +34,12 @@ public abstract class Attack {
 				float D = Ac * Mathf.Round(((S * O * B) + C) * L); // Calculate the damage of the full attack
 
 				fullDmg += D; // Add the calcualted damage to the total damage the defender will experience
-
-				attackers[j].SubtractStamina(CalculateStaminaLoss(attackers[j]));
+				
+				// attackers[j].SubtractStamina(CalculateStaminaLoss(attackers[j]));
 
 				Debug.Log("Ac = " + Ac + ", L = " + L + ", B = " + B + ", S = " + S + ", C = " + C);
 				Debug.Log("DAMAGE = " + D);
-   }
+			}
 
 			defenders[i].SubtractHealth(fullDmg); // Hit the defender for the full damage
 
@@ -57,7 +57,7 @@ public abstract class Attack {
 		/* Calculate the charmisa modifier for the damage formula */
 
 		if (dmgRat > 0) { // If the attack is physical
-			float charRange = attacker.GetStrength( ) / 2f; // The full charisma range
+			float charRange = attacker.GetStrength( ) / 15f; // The full charisma range
 
 			float minBound = -charRange + (attacker.GetCharisma( ) * charRange); // The minimum value based on charisma
 			float maxBound = charRange - ((1 - attacker.GetCharisma( )) * charRange); // The maximum value based on charisma
@@ -72,8 +72,6 @@ public abstract class Attack {
 
 		float boostRatio = attacker.GetAccuracyBoost( ) / defender.GetEvasionBoost( ); // The in-battle boost ratio between the attacker and the defender
 		float speedRatio = attacker.GetSpeed( ) / defender.GetSpeed( ); // The speed ratio between the attacker and the defender
-
-		Debug.Log("ACCURACY = " + (boostRatio * speedRatio * acc));
 
 		// Get a random number between 0 and 1, if the number is less than the calcuated accuracy, it is a hit
 		return (Utils.GetRandDec(0, 1) < boostRatio * speedRatio * acc) ? 1 : 0;
@@ -101,7 +99,9 @@ public abstract class Attack {
 		float attRatio = (attacker.GetStrength( ) * dmgRat) + (attacker.GetMysticStrength( ) * (1 - dmgRat)); // The ratio between the attackers attack stats
 		float defRatio = (defender.GetDefense( ) * dmgRat) + (defender.GetFortitude( ) * (1 - dmgRat)); // The ratio between the defenders defense stats
 
-		return dmg * (attRatio / defRatio) * ((defRatio > attRatio) ? 1 : (attRatio - defRatio + 1));
+		float fullDmg = dmg * (attRatio / defRatio);
+
+		return (fullDmg < 0) ? 0 : fullDmg;
 	}
 
 	private float CalculateStaminaLoss (Creature attacker) {
