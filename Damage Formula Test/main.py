@@ -21,7 +21,7 @@ characters.append(Character('Mietra',   17, 15, 4,  12, 26, 24, 12, 17, 10, 10))
 characters.append(Character('Roy',      10, 0,  6,  12, 0,  6,  12, 45, 40, 20))
 characters.append(Character('Egge',     0,  45, 8,  12, 30, 18, 15, -1, 8,  8))
 characters.append(Character('Taroh',    26, 15, 15, 35, 14, 36, 3,  9,  5,  10))
-characters.append(Character('Twins',    6,  5,  6,  2,  13, 2,  30, 38, 25, 15))
+characters.append(Character('Twins',    6,  5,  6,  5,  13, 5,  30, 38, 25, 15))
 characters.append(Character('GOTS',     20, 15, 10, 8,  34, 12, 20, 23, 15, 10))
 
 base_attack = Attack('Base Attack', 10, 1, 1)
