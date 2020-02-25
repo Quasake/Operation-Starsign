@@ -1,78 +1,102 @@
+import gspread
+import math
 import numpy as np
 import plotly.graph_objects as go
 
 from character import Character
 from attack import Attack
+from oauth2client.service_account import ServiceAccountCredentials
 
-characters = []
-test_count = 0
-loading_count = 0
-total_tests = 182
+CHAR_NAME = 0
+CHAR_HP = 12
+CHAR_MP = 13
+CHAR_S = 14
+CHAR_D = 15
+CHAR_MS = 16
+CHAR_F = 17
+CHAR_SP = 18
+CHAR_E = 19
+CHAR_L = 20
+CHAR_C = 21
 
-characters.append(Character('Tepunne',  20, 15, 5,  16, 17, 24, 10, 15, 10, 10))
-characters.append(Character('Aloro',    30, 30, 9,  24, 10, 28, 5,  35, 5,  8))
-characters.append(Character('Anabelle', 13, 10, 10, 12, 14, 12, 19, 26, 10, 5))
-characters.append(Character('Barthon',  10, 14, 4,  8,  0,  10, 13, 15, 26, 40))
-characters.append(Character('Ellie',    11, 13, 3,  10, 30, 12, 20, 20, 13, 25))
-characters.append(Character('Farella',  50, 20, 2,  20, 17, 36, 9,  11, 10, 10))
-characters.append(Character('Haest',    16, 8,  13, 13, 10, 20, 11, 23, 30, 13))
-characters.append(Character('Lytra',    15, 17, 3,  13, 21, 18, 10, 14, 10, 10))
-characters.append(Character('Mietra',   17, 15, 4,  12, 26, 24, 12, 17, 10, 10))
-characters.append(Character('Roy',      10, 0,  6,  12, 0,  6,  12, 45, 40, 20))
-characters.append(Character('Egge',     0,  45, 8,  12, 30, 18, 15, -1, 8,  8))
-characters.append(Character('Taroh',    26, 15, 15, 35, 14, 36, 3,  9,  5,  10))
-characters.append(Character('Twins',    6,  5,  6,  5,  13, 5,  30, 38, 25, 15))
-characters.append(Character('GOTS',     20, 15, 10, 8,  34, 12, 20, 23, 15, 10))
+CHARS = []
 
-base_attack = Attack('Base Attack', 10, 1, 1)
+def setup ():
+    global CHARS
+
+    print('Accessing spreadsheet...')
+
+    scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('dmg_form_google.json', scope)
+    client = gspread.authorize(creds)
+    sheet = client.open('Stat Planning').sheet1
+
+    sheet_values = sheet.get_all_values()
+
+    print('Updating character stats...')
+
+    for row in range(1, len(sheet_values)):
+        row_values = sheet_values[row]
+
+        char_name = row_values[CHAR_NAME].replace(' ', '')
+
+        if char_name == '':
+            continue
+
+        char_hp = float(row_values[CHAR_HP])
+        char_mp = float(row_values[CHAR_MP])
+        char_s = float(row_values[CHAR_S])
+        char_d = float(row_values[CHAR_D])
+        char_ms = float(row_values[CHAR_MS])
+        char_f = float(row_values[CHAR_F])
+        char_sp = float(row_values[CHAR_SP])
+        char_e = float(row_values[CHAR_E])
+        char_l = float(row_values[CHAR_L])
+        char_c = float(row_values[CHAR_C])
+
+        CHARS.append(Character(char_name, char_hp, char_mp, char_s, char_d, char_ms, char_f, char_sp, char_e, char_l, char_c))
 
 # print(base_attack.calc_damage(characters[0], characters[2]))
 
-'''
-trials = [base_attack.calc_damage(characters[0], characters[2]) for i in range(2500)]
-fig = go.Figure(data=go.Histogram(x=trials, nbinsx=100))
-fig.show()
-'''
-
+# WEBSITE: https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
 def print_progress_bar (iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█', print_end="\r"):
-    """
-    WEBSITE: https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        print_end   - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filled_length = int(length * iteration // total)
     bar = fill * filled_length + '-' * (length - filled_length)
 
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = print_end)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end=print_end)
 
     # Print New Line on Complete
     if iteration == total:
         print()
 
-print('Running tests...')
+def run_tests ():
+    global CHARS
 
-for a in range(len(characters)):
-    for d in range(len(characters)):
-        attacker = characters[a]
-        defender = characters[d]
-        
-        if attacker.name != defender.name:
-            test_count += 1
-            print_progress_bar(test_count, total_tests, prefix=' Progress : ', length=50)
-            
-            trials = [base_attack.calc_damage(attacker, defender) for i in range(2500)]
+    print('Running tests...')
 
-            fig = go.Figure(data=go.Histogram(x=trials, nbinsx=100))
-            fig.write_image('graphs/' + attacker.name + '_attacks_' + defender.name + '.png')
+    base_attack = Attack('Base Attack', 10, 1, 1)
 
-print('\nDone!')
+    test_count = 0
+    total_tests = math.factorial(len(CHARS)) / math.factorial(len(CHARS) - 2)
+
+    for a in range(len(CHARS)):
+        for d in range(len(CHARS)):
+            attacker = CHARS[a]
+            defender = CHARS[d]
+
+            if attacker.name != defender.name:
+                test_count += 1
+                print_progress_bar(test_count, total_tests, prefix='>')
+
+                trials = [base_attack.calc_damage(attacker, defender) for i in range(2500)]
+
+                fig = go.Figure(data=go.Histogram(x=trials, nbinsx=100))
+                fig.write_image('graphs/' + attacker.name + '_attacks_' + defender.name + '.png')
+
+    print('Done!')
+
+if __name__ == '__main__':
+    setup()
+
+    run_tests()
