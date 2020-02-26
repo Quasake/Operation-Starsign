@@ -21,25 +21,22 @@ def sim ():
     myst_attack = Attack('Mystical Attack', 10, 1, 0)
 
     test_count = 0
-    total_tests = len(combins)
+    total_tests = math.factorial(len(characters)) / (math.factorial(len(characters) - 2) * math.factorial(2))
 
-    print('Running tests...')
-
-    print_progress_bar(test_count, total_tests, prefix='>')
+    print('Running tests...[Total tests : ' + str(total_tests) + ']')
 
     for comb in combins:
         char_1 = comb[0]
         char_2 = comb[1]
 
         if (char_1.name == 'Barthon Vandera' and char_2.name == 'Roy Andrews') or (char_2.name == 'Barthon Vandera' and char_1.name == 'Roy Andrews'):
-            test_count += 1
-            print_progress_bar(test_count, total_tests, prefix='>', suffix='[' + char_1.name + ' Has Physical Battle With ' + char_2.name + ']' + (' ' * 15))
+            print_progress(test_count, total_tests, prefix='SKIP >', suffix='[' + char_1.name + ' >x< ' + char_2.name + ']')
 
+            test_count += 1
             continue
 
         if char_1.name != char_2.name:
-            test_count += 1
-            print_progress_bar(test_count, total_tests, prefix='>', suffix='[' + char_1.name + ' Has Physical Battle With ' + char_2.name + ']' + (' ' * 15))
+            print_progress(test_count, total_tests, prefix='PHYS >', suffix='[' + char_1.name + ' >x< ' + char_2.name + ']')
 
             phys_trials = [do_battle(char_1, char_2, phys_attack) for i in range(75)]
             char_1_phys_trials = []
@@ -54,12 +51,12 @@ def sim ():
             phys_fig = go.Figure()
             phys_fig.add_trace(go.Histogram(x=char_1_phys_trials, nbinsx=100, name=char_1.name))
             phys_fig.add_trace(go.Histogram(x=char_2_phys_trials, nbinsx=100, name=char_2.name))
-            phys_fig.update_layout(title=char_1.name + ' Has Physical Battle With ' + char_2.name, xaxis_title='Time to Kill [s]', yaxis_title='Number of Times', barmode='overlay')
+            phys_fig.update_layout(title=char_1.name + ' Has Physical Battle With ' + char_2.name, xaxis_title='Time to Kill [s]', yaxis_title='Number of Times', barmode='overlay', showlegend=True)
             phys_fig.update_traces(opacity=0.5)
 
             phys_fig.write_image('graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_pbattle_' + char_2.name.replace(' ', '').lower() + '.png')
 
-            print_progress_bar(test_count, total_tests, prefix='>', suffix='[' + char_1.name + ' Has Mystical Battle With ' + char_2.name + ']' + (' ' * 15))
+            print_progress(test_count, total_tests, prefix='MYST >', suffix='[' + char_1.name + ' >x< ' + char_2.name + ']')
 
             myst_trials = [do_battle(char_1, char_2, myst_attack) for i in range(75)]
             char_1_myst_trials = []
@@ -74,12 +71,14 @@ def sim ():
             myst_fig = go.Figure()
             myst_fig.add_trace(go.Histogram(x=char_1_myst_trials, nbinsx=100, name=char_1.name))
             myst_fig.add_trace(go.Histogram(x=char_2_myst_trials, nbinsx=100, name=char_2.name))
-            myst_fig.update_layout(title=char_1.name + ' Has Mystical Battle With ' + char_2.name, xaxis_title='Time to Kill [s]', yaxis_title='Number of Times', barmode='overlay')
+            myst_fig.update_layout(title=char_1.name + ' Has Mystical Battle With ' + char_2.name, xaxis_title='Time to Kill [s]', yaxis_title='Number of Times', barmode='overlay', showlegend=True)
             myst_fig.update_traces(opacity=0.5)
 
             myst_fig.write_image('graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_mbattle_' + char_2.name.replace(' ', '').lower() + '.png')
 
-    print('Done!')
+            test_count += 1
+
+    print_progress(test_count, total_tests, prefix=' >', suffix='[Done!]')
 
 def do_battle (char_1, char_2, attack):
     global BATTLE_START_TIME

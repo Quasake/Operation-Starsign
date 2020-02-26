@@ -53,6 +53,11 @@ def get_char_stats ():
 
 # print(base_attack.calc_damage(characters[0], characters[2]))
 
+def print_progress (iteration, total, prefix='', suffix='', decimals=1):
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+
+    print(prefix + ' ' + percent + '% [' + str(iteration) + '] ' + suffix)
+
 # WEBSITE: https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
 def print_progress_bar (iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', print_end="\r"):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
