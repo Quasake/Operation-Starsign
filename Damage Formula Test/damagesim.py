@@ -20,8 +20,14 @@ def sim ():
             attacker = characters[a]
             defender = characters[d]
 
+            if (attacker.name == 'God of the Seas' and defender.name == 'Tepunné Ceanna') or (defender.name == 'God of the Seas' and attacker.name == 'Tepunné Ceanna'):
+                print_progress(test_count, total_tests, prefix='SKIP >', suffix='[' + attacker.name + ' >x< ' + defender.name + ']')
+
+                test_count += 1
+                continue
+
             if attacker.name != defender.name:
-                print_progress(test_count, total_tests, prefix=' >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
+                print_progress(test_count, total_tests, prefix='ATTA >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
 
                 trials = [base_attack.calc_damage(attacker, defender) for i in range(2500)]
 
