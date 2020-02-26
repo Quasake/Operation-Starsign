@@ -12,7 +12,7 @@ class Attack:
         self.acc = acc
         self.dmg_rat = dmg_rat
 
-    def calc_damage (self, attacker, defender):
+    def calc_damage (self, attacker, defender, integer=False):
         acc_mod = self.__calc_acc_mod(attacker, defender)
         luck_mod = self.__calc_luck_mod(attacker)
         charisma_mod = self.__calc_charisma_mod(attacker)
@@ -27,14 +27,15 @@ class Attack:
         # print('BON: ' + str(bonus_mod))
         # print('BASE: ' + str(base_dmg))
 
-        # total_dmg = acc_mod * round(((stamina_mod * bonus_mod * base_dmg) + charisma_mod) * luck_mod)
         total_dmg = acc_mod * (((stamina_mod * bonus_mod * base_dmg) + charisma_mod) * luck_mod)
+        if integer:
+            total_dmg = acc_mod * round(((stamina_mod * bonus_mod * base_dmg) + charisma_mod) * luck_mod)
 
         return total_dmg
 
     def __calc_luck_mod (self, attacker):
         multiplier = CRIT if random.random() <= attacker.l / 100.0 else 1
-        
+
         return multiplier
 
     def __calc_charisma_mod (self, attacker):
