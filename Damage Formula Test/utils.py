@@ -1,25 +1,27 @@
 import gspread
+import plotly.graph_objects as go
 
 from character import Character
+from attack import Attack
 from oauth2client.service_account import ServiceAccountCredentials
 
 CHAR_NAME = 0
-CHAR_HP = 12
-CHAR_MP = 13
-CHAR_S = 14
-CHAR_D = 15
-CHAR_MS = 16
-CHAR_F = 17
-CHAR_SP = 18
-CHAR_E = 19
-CHAR_L = 20
-CHAR_C = 21
+CHAR_HP = 11
+CHAR_MP = 12
+CHAR_S = 13
+CHAR_D = 14
+CHAR_MS = 15
+CHAR_F = 16
+CHAR_SP = 17
+CHAR_E = 18
+CHAR_L = 19
+CHAR_C = 20
 
 def get_char_stats ():
     print('Accessing spreadsheet...')
 
     scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('dmg_form_google.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('../dmg_form_google.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Stat Planning').sheet1
 
@@ -51,21 +53,49 @@ def get_char_stats ():
 
     return char_stats
 
-# print(base_attack.calc_damage(characters[0], characters[2]))
-
 def print_progress (iteration, total, prefix='', suffix='', decimals=1):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
 
     print(prefix + ' ' + percent + '% [' + str(iteration) + '] ' + suffix)
 
-# WEBSITE: https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-def print_progress_bar (iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', print_end="\r"):
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filled_length = int(length * iteration // total)
-    bar = fill * filled_length + '-' * (length - filled_length)
+def create_histogram (data, title, xaxis_title, yaxis_title):
+    fig = go.Figure()
 
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end=print_end)
+    for key in data.keys():
+        fig.add_trace(go.Histogram(x=data.get(key), nbinsx=100, name=key))
 
-    # Print New Line on Complete
-    if iteration == total:
-        print()
+    fig.update_layout(title=title, xaxis_title=xaxis_title, yaxis_title=yaxis_title, barmode='overlay', showlegend=True)
+    fig.update_traces(opacity=0.5 if len(data.keys()) > 1 else 1)
+
+    return fig
+
+def battle_sim (char_1, char_2, attack):
+    char_1.curr_hp = char_1.hp
+    char_2.curr_hp = char_2.hp
+    char_1.curr_sp = 100
+    char_2.curr_sp = 100
+
+    battle_winner = None
+    iterations = 0
+
+    while battle_winner == None:
+        iterations += 1
+
+        if char_1.curr_sp == 100 and battle_winner == None:
+            char_2.curr_hp -= attack.calc_damage(char_1, char_2, integer=True)
+            char_1.curr_sp = 0
+
+            if char_2.curr_hp <= 0:
+                battle_winner = char_1
+
+        if char_2.curr_sp == 100 and battle_winner == None:
+            char_1.curr_hp -= attack.calc_damage(char_2, char_1, integer=True)
+            char_2.curr_sp = 0
+
+            if char_1.curr_hp <= 0:
+                battle_winner = char_2
+
+        char_1.regain_speed()
+        char_2.regain_speed()
+
+    return [iterations, battle_winner]

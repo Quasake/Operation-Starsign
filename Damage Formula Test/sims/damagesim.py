@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(1, '../')
+
 import math
 import plotly.graph_objects as go
 
@@ -21,7 +24,7 @@ def sim ():
             defender = characters[d]
 
             if (attacker.name == 'God of the Seas' and defender.name == 'Tepunné Ceanna') or (defender.name == 'God of the Seas' and attacker.name == 'Tepunné Ceanna'):
-                print_progress(test_count, total_tests, prefix='SKIP >', suffix='[' + attacker.name + ' >x< ' + defender.name + ']')
+                print_progress(test_count, total_tests, prefix='SKIP >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
 
                 test_count += 1
                 continue
@@ -31,10 +34,10 @@ def sim ():
 
                 trials = [base_attack.calc_damage(attacker, defender) for i in range(2500)]
 
-                fig = go.Figure(data=go.Histogram(x=trials, nbinsx=100))
-                fig.update_layout(title=attacker.name + ' Attacks ' + defender.name, xaxis_title='Damage', yaxis_title='Number of Times')
+                data = {attacker.name: trials}
 
-                fig.write_image('graphs/damagesim/' + attacker.name.replace(' ', '').lower() + '_attacks_' + defender.name.replace(' ', '').lower() + '.png')
+                fig = create_histogram(data, attacker.name + ' Attacks ' + defender.name, 'Damage', 'Number of Times')
+                fig.write_image('../graphs/damagesim/' + attacker.name.replace(' ', '').lower() + '_attacks_' + defender.name.replace(' ', '').lower() + '.png')
 
                 test_count += 1
 
