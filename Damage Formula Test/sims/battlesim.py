@@ -2,6 +2,7 @@ import sys
 sys.path.insert(1, '../')
 
 import math
+import numpy as np
 import plotly.graph_objects as go
 
 from itertools import combinations_with_replacement
@@ -46,7 +47,7 @@ def sim ():
             for trial in phys_trials:
                 phys_data[char_1.name if char_1.name == trial[1].name else char_2.name].append(trial[0])
 
-            phys_fig = create_histogram(phys_data, char_1.name + ' Has Physical Battle With ' + char_2.name, 'Time to Kill [s]', 'Number of Times')
+            phys_fig = create_histogram(phys_data, char_1.name + ' Has Physical Battle With ' + char_2.name, 'Time to Kill [s]')
             phys_fig.write_image('../graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_pbattle_' + char_2.name.replace(' ', '').lower() + '.png')
 
             test_count += 1
@@ -59,7 +60,7 @@ def sim ():
             for trial in myst_trials:
                 myst_data[char_1.name if char_1.name == trial[1].name else char_2.name].append(trial[0])
 
-            myst_fig = create_histogram(myst_data, char_1.name + ' Has Mystical Battle With ' + char_2.name, 'Time to Kill [s]', 'Number of Times')
+            myst_fig = create_histogram(myst_data, char_1.name + ' Has Mystical Battle With ' + char_2.name, 'Time to Kill [s]')
             myst_fig.write_image('../graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_mbattle_' + char_2.name.replace(' ', '').lower() + '.png')
 
             test_count += 1

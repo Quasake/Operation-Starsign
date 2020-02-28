@@ -1,4 +1,5 @@
 import gspread
+import math
 import plotly.graph_objects as go
 
 from character import Character
@@ -58,13 +59,13 @@ def print_progress (iteration, total, prefix='', suffix='', decimals=1):
 
     print(prefix + ' ' + percent + '% [' + str(iteration) + '] ' + suffix)
 
-def create_histogram (data, title, xaxis_title, yaxis_title):
+def create_histogram (data, title, xaxis_title):
     fig = go.Figure()
+    fig.update_layout(title=title, xaxis_title=xaxis_title, yaxis_title='Count', barmode='overlay', showlegend=True)
 
     for key in data.keys():
-        fig.add_trace(go.Histogram(x=data.get(key), nbinsx=100, name=key))
+        fig.add_trace(go.Histogram(x=data.get(key), name=key))
 
-    fig.update_layout(title=title, xaxis_title=xaxis_title, yaxis_title=yaxis_title, barmode='overlay', showlegend=True)
     fig.update_traces(opacity=0.5 if len(data.keys()) > 1 else 1)
 
     return fig

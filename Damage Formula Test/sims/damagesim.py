@@ -11,10 +11,11 @@ from utils import *
 def sim ():
     characters = get_char_stats()
 
-    base_attack = Attack('Base Attack', 10, 1, 1)
+    phys_attack = Attack('Physical Attack', 10, 1, 1)
+    myst_attack = Attack('Mystical Attack', 10, 1, 0)
 
     test_count = 0
-    total_tests = math.factorial(len(characters)) / math.factorial(len(characters) - 2)
+    total_tests = (math.factorial(len(characters)) / math.factorial(len(characters) - 2)) * 2
 
     print('Running tests...[Total tests : ' + str(total_tests) + ']')
 
@@ -26,18 +27,27 @@ def sim ():
             if (attacker.name == 'God of the Seas' and defender.name == 'Tepunné Ceanna') or (defender.name == 'God of the Seas' and attacker.name == 'Tepunné Ceanna'):
                 print_progress(test_count, total_tests, prefix='SKIP >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
 
-                test_count += 1
+                test_count += 2
                 continue
 
             if attacker.name != defender.name:
-                print_progress(test_count, total_tests, prefix='ATTA >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
+                print_progress(test_count, total_tests, prefix='PHYS >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
 
-                trials = [base_attack.calc_damage(attacker, defender) for i in range(2500)]
+                phys_trials = [phys_attack.calc_damage(attacker, defender) for i in range(2500)]
+                phys_data = {attacker.name: phys_trials}
 
-                data = {attacker.name: trials}
+                fig = create_histogram(phys_data, attacker.name + ' Physical Attacks ' + defender.name, 'Damage')
+                fig.write_image('../graphs/damagesim/' + attacker.name.replace(' ', '').lower() + '_pattack_' + defender.name.replace(' ', '').lower() + '.png')
 
-                fig = create_histogram(data, attacker.name + ' Attacks ' + defender.name, 'Damage', 'Number of Times')
-                fig.write_image('../graphs/damagesim/' + attacker.name.replace(' ', '').lower() + '_attacks_' + defender.name.replace(' ', '').lower() + '.png')
+                test_count += 1
+
+                print_progress(test_count, total_tests, prefix='MYST >', suffix='[' + attacker.name + ' > ' + defender.name + ']')
+
+                myst_trials = [myst_attack.calc_damage(attacker, defender) for i in range(2500)]
+                myst_data = {attacker.name: myst_trials}
+
+                fig = create_histogram(myst_data, attacker.name + ' Mystical Attacks ' + defender.name, 'Damage')
+                fig.write_image('../graphs/damagesim/' + attacker.name.replace(' ', '').lower() + '_mattack_' + defender.name.replace(' ', '').lower() + '.png')
 
                 test_count += 1
 

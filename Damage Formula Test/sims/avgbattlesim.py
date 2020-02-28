@@ -29,7 +29,7 @@ def sim ():
         for trial in phys_trials:
             phys_data[char.name if char.name == trial[1].name else avg_char.name].append(trial[0])
 
-        phys_fig = create_histogram(phys_data, char.name + ' Has Physical Battle With ' + avg_char.name, 'Time to Kill [s]', 'Number of Times')
+        phys_fig = create_histogram(phys_data, char.name + ' Has Physical Battle With ' + avg_char.name, 'Time to Kill [s]')
         phys_fig.write_image('../graphs/avgbattlesim/' + char.name.replace(' ', '').lower() + '_pbattle_' + avg_char.name.replace(' ', '').lower() + '.png')
 
         test_count += 1
@@ -42,7 +42,7 @@ def sim ():
         for trial in myst_trials:
             myst_data[char.name if char.name == trial[1].name else avg_char.name].append(trial[0])
 
-        myst_fig = create_histogram(myst_data, char.name + ' Has Mystical Battle With ' + avg_char.name, 'Time to Kill [s]', 'Number of Times')
+        myst_fig = create_histogram(myst_data, char.name + ' Has Mystical Battle With ' + avg_char.name, 'Time to Kill [s]')
         myst_fig.write_image('../graphs/avgbattlesim/' + char.name.replace(' ', '').lower() + '_mbattle_' + avg_char.name.replace(' ', '').lower() + '.png')
 
         test_count += 1
