@@ -18,6 +18,9 @@ CHAR_E = 18
 CHAR_L = 19
 CHAR_C = 20
 
+PHYS_ATTACK = Attack('Physical Attack', 5, 1, 1)
+MYST_ATTACK = Attack('Mystical Attack', 5, 1, 0)
+
 def get_char_stats ():
     print('Accessing spreadsheet...')
 
@@ -69,6 +72,9 @@ def create_histogram (data, title, xaxis_title):
     fig.update_traces(opacity=0.5 if len(data.keys()) > 1 else 1)
 
     return fig
+
+def average (array):
+    return int(sum(array) / len(array))
 
 def battle_sim (char_1, char_2, attack):
     char_1.curr_hp = char_1.hp

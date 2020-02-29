@@ -14,8 +14,8 @@ def sim ():
     characters = get_char_stats()
     combins = list(combinations_with_replacement(characters, 2))
 
-    phys_attack = Attack('Physical Attack', 10, 1, 1)
-    myst_attack = Attack('Mystical Attack', 10, 1, 0)
+    phys_average = []
+    myst_average = []
 
     test_count = 0
     total_tests = (math.factorial(len(characters)) / (math.factorial(len(characters) - 2) * math.factorial(2))) * 2
@@ -41,11 +41,14 @@ def sim ():
         if char_1.name != char_2.name:
             print_progress(test_count, total_tests, prefix='PHYS >', suffix='[' + char_1.name + ' >x< ' + char_2.name + ']')
 
-            phys_trials = [battle_sim(char_1, char_2, phys_attack) for i in range(2500)]
+            phys_trials = [battle_sim(char_1, char_2, PHYS_ATTACK) for i in range(2500)]
 
             phys_data = {char_1.name: [], char_2.name: []}
             for trial in phys_trials:
                 phys_data[char_1.name if char_1.name == trial[1].name else char_2.name].append(trial[0])
+
+            phys_average.extend(phys_data[char_1.name])
+            phys_average.extend(phys_data[char_2.name])
 
             phys_fig = create_histogram(phys_data, char_1.name + ' Has Physical Battle With ' + char_2.name, 'Time to Kill [s]')
             phys_fig.write_image('../graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_pbattle_' + char_2.name.replace(' ', '').lower() + '.png')
@@ -54,11 +57,14 @@ def sim ():
 
             print_progress(test_count, total_tests, prefix='MYST >', suffix='[' + char_1.name + ' >x< ' + char_2.name + ']')
 
-            myst_trials = [battle_sim(char_1, char_2, myst_attack) for i in range(2500)]
+            myst_trials = [battle_sim(char_1, char_2, MYST_ATTACK) for i in range(2500)]
 
             myst_data = {char_1.name: [], char_2.name: []}
             for trial in myst_trials:
                 myst_data[char_1.name if char_1.name == trial[1].name else char_2.name].append(trial[0])
+
+            myst_average.extend(myst_data[char_1.name])
+            myst_average.extend(myst_data[char_2.name])
 
             myst_fig = create_histogram(myst_data, char_1.name + ' Has Mystical Battle With ' + char_2.name, 'Time to Kill [s]')
             myst_fig.write_image('../graphs/battlesim/' + char_1.name.replace(' ', '').lower() + '_mbattle_' + char_2.name.replace(' ', '').lower() + '.png')
@@ -66,6 +72,9 @@ def sim ():
             test_count += 1
 
     print_progress(test_count, total_tests, prefix=' >', suffix='[Done!]')
+
+    print('Average Physical Battle Time : ' + str(average(phys_average)))
+    print('Average Mystical Battle Time : ' + str(average(myst_average)))
 
 if __name__ == '__main__':
     sim()
